@@ -409,7 +409,7 @@ class NativeDataStore extends abData.DataStore {
     async clearDBRequests_Async(transactionId = null) {
         js0.args(arguments, [ 'int', js0.Null, js0.Default ]);
 
-        await this.getT('_ABData_DBRequests').delete_Async(this.db, {}, 
+        await this.getTable('_ABData_DBRequests').delete_Async(this.db, {}, 
                 transactionId);
     }
 
@@ -436,7 +436,7 @@ class NativeDataStore extends abData.DataStore {
     async getDeviceInfo_Async(transactionId = null) {
         js0.args(arguments, [ 'int', js0.Null, js0.Default ]);
 
-        let tSettings = this.getT('_ABData_Settings');
+        let tSettings = this.getTable('_ABData_Settings');
         let rDeviceInfo = await tSettings.row_Async(this.db, { where: 
                 [ 'Name', '=', 'deviceInfo' ] }, transactionId);
 
@@ -492,14 +492,6 @@ class NativeDataStore extends abData.DataStore {
             throw new Error(`Request '${requestName}' does not exist.`);
 
         return this._requests[requestName];
-    }
-
-    getT(tableName) {
-        return this.getTable(tableName);
-    }
-
-    getT_ById(tableId) {
-        return this.getTable_ById(tableId);
     }
 
     getTable(tableName) {
@@ -649,7 +641,7 @@ class NativeDataStore extends abData.DataStore {
                 if (!this.scheme.hasTable_ById(parseInt(tableId)))
                     continue;
 
-                await this.getT_ById(parseInt(tableId)).delete_Async(this.db, {
+                await this.getTable_ById(parseInt(tableId)).delete_Async(this.db, {
                     where: [
                         [ '_Id', 'IN', result.data.updateData.delete[tableId] ],
                     ],
@@ -719,17 +711,17 @@ class NativeDataStore extends abData.DataStore {
                 let update_Rows = result.data.updateData
                         .update[tableName];
 
-                await this.getT(tableName).insert_NoAssoc_Async(
+                await this.getTable(tableName).insert_NoAssoc_Async(
                         this.db, update_Rows, update_TableColumns, 
                         transactionId, false, deviceInfo.lastUpdate !== null);
 
                 /* Assoc */
                 // if (deviceInfo.lastUpdate === null) {
-                //     await this.getT(tableName).insert_Async(this.db,
+                //     await this.getTable(tableName).insert_Async(this.db,
                 //             result.data.updateData.update[tableName], 
                 //             transactionId);
                 // } else {
-                //     await this.getT(tableName).update_Async(this.db,
+                //     await this.getTable(tableName).update_Async(this.db,
                 //             result.data.updateData.update[tableName], 
                 //             transactionId);
                 // }
@@ -803,7 +795,7 @@ class NativeDataStore extends abData.DataStore {
                     let update_Rows = result_DataInfos
                             .data.updateData.update[tableName];
 
-                    await this.getT(tableName).insert_NoAssoc_Async(
+                    await this.getTable(tableName).insert_NoAssoc_Async(
                             this.db, update_Rows, update_ColumnNames,
                             transactionId, false, deviceInfo.lastUpdate !== null);
 
@@ -812,11 +804,11 @@ class NativeDataStore extends abData.DataStore {
 
                     /* Assoc */
                     // if (deviceInfo.lastUpdate === null) {
-                    //     await this.getT(tableName).insert_Async(this.db,
+                    //     await this.getTable(tableName).insert_Async(this.db,
                     //         result_DataInfos.data.updateData.update[tableName], 
                     //         transactionId);
                     // } else {
-                    //     await this.getT(tableName).update_Async(this.db,
+                    //     await this.getTable(tableName).update_Async(this.db,
                     //             result_DataInfos.data.updateData.update[tableName], 
                     //             transactionId);
                     // }

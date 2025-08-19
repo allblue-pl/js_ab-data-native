@@ -28,6 +28,7 @@ export default class NativeDatabase {
                     columnInfo.name,
                     columnInfo.type.toLowerCase(),
                     columnInfo.notNull,
+                    '',
                 ));
             }
 
